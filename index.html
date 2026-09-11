@@ -64,7 +64,6 @@
   @keyframes stepBack{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
 
   .step-head{margin-bottom:20px}
-  .step-eyebrow{font-size:0.78rem;font-weight:700;color:var(--cyan-dark);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px}
   .step-title{font-size:1.32rem;font-weight:800;line-height:1.3;color:var(--ink)}
   .step-desc{font-size:0.95rem;color:var(--cinza-muted);margin-top:7px;line-height:1.55}
 
@@ -93,7 +92,7 @@
     flex-shrink:0;width:40px;height:40px;border-radius:11px;background:var(--cyan-bg);
     display:flex;align-items:center;justify-content:center;color:var(--cyan-dark);transition:background .18s ease;
   }
-  .opt-icon svg{width:21px;height:21px;stroke:currentColor;stroke-width:1.75;fill:none}
+  .opt-icon svg{width:21px;height:21px;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
   .opt.sel .opt-icon{background:var(--cyan);color:#fff}
   .opt-text{flex:1;min-width:0}
   .opt-name{font-weight:700;font-size:1rem;color:var(--ink)}
@@ -249,7 +248,7 @@
   <!-- S1: Intenção -->
   <div class="step active" id="s1">
     <div class="step-head">
-      <div class="step-eyebrow">Etapa 1 de 5</div>
+
       <div class="step-title">Por que você está aqui hoje?</div>
       <div class="step-desc">Isso garante que vamos te direcionar corretamente.</div>
     </div>
@@ -271,7 +270,7 @@
         <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
       </button>
       <button class="opt" data-val="duvida" onclick="pick(this,'intent')">
-        <div class="opt-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="opt-icon"><svg viewBox="-2 -2 28 28"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg></div>
         <div class="opt-text">
           <div class="opt-name">Tenho dúvidas sobre o Nonno</div>
           <div class="opt-sub">Quero entender como o serviço funciona antes de decidir</div>
@@ -292,7 +291,7 @@
   <!-- S2: Localização -->
   <div class="step" id="s2">
     <div class="step-head">
-      <div class="step-eyebrow">Etapa 2 de 5</div>
+
       <div class="step-title">Onde a pessoa que você ama precisa ser atendida?</div>
       <div class="step-desc">Informe a cidade onde o cuidado será realizado.</div>
     </div>
@@ -328,7 +327,7 @@
   <!-- S3: Tipo de cuidado -->
   <div class="step" id="s3">
     <div class="step-head">
-      <div class="step-eyebrow">Etapa 3 de 5</div>
+
       <div class="step-title">Qual tipo de cuidado você precisa?</div>
       <div class="step-desc">Selecione o que melhor descreve a necessidade atual.</div>
     </div>
@@ -372,7 +371,7 @@
   <!-- S4: Frequência + Urgência -->
   <div class="step" id="s4">
     <div class="step-head">
-      <div class="step-eyebrow">Etapa 4 de 5</div>
+
       <div class="step-title">Com que frequência você precisará do cuidador?</div>
       <div class="step-desc">Isso define a proposta mais adequada — quanto mais regular, maior nossa prioridade de atendimento.</div>
     </div>
@@ -411,12 +410,16 @@
 
     <div class="opts g2" id="urg-group">
       <button class="opt" data-val="urgente" onclick="pick(this,'urg')">
-        <div class="opt-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <div class="opt-text"><div class="opt-name">Urgente</div><div class="opt-sub">Hoje ou amanhã</div></div>
+        <div class="opt-icon"><svg viewBox="-2 -2 28 28"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg></div>
+        <div class="opt-text">
+          <div class="opt-name">Urgente</div>
+          <div class="opt-sub">Hoje ou amanhã</div>
+          <div class="revenue-chip">⚡ Atendimento prioritário</div>
+        </div>
         <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
       </button>
       <button class="opt" data-val="semana" onclick="pick(this,'urg')">
-        <div class="opt-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></div>
+        <div class="opt-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg></div>
         <div class="opt-text"><div class="opt-name">Esta semana</div><div class="opt-sub">Nos próximos dias</div></div>
         <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
       </button>
@@ -439,7 +442,7 @@
   <!-- S5: Contato -->
   <div class="step" id="s5">
     <div class="step-head">
-      <div class="step-eyebrow">Etapa 5 de 5</div>
+
       <div class="step-title">Quase lá — seus dados de contato</div>
       <div class="step-desc">Para enviarmos sua proposta personalizada pelo WhatsApp.</div>
     </div>
