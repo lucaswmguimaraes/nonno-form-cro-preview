@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Prévia CRO — Formulário Nonno "Estou em Busca"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cyan:#00BFFF;
+    --cyan-dark:#0099CC;
+    --cyan-bg:#E6F7FF;
+    --ink:#1A2530;
+    --cinza-muted:#6B7A85;
+    --cinza-line:#E3E8EC;
+    --bg:#F7F9FA;
+    --card:#FFFFFF;
+    --danger:#C0392B;
+    --danger-bg:#FBEAE8;
+    --ok:#1E8E5A;
+    --ok-bg:#E8F7EF;
+    --radius-sm:10px;
+    --radius-md:16px;
+    --shadow-card:0 2px 10px rgba(20,40,60,0.06);
+    --shadow-cta:0 6px 20px rgba(0,191,255,0.35);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;font-family:'Manrope',sans-serif;background:var(--bg);color:var(--ink);
+    -webkit-font-smoothing:antialiased;padding-bottom:96px;
+  }
+
+  /* ── banner de contexto (só na prévia) ─────────────────────────── */
+  .preview-banner{
+    background:var(--ink);color:#fff;text-align:center;font-size:0.78rem;
+    padding:10px 16px;line-height:1.5;
+  }
+  .preview-banner b{color:var(--cyan)}
+
+  .page-wrap{max-width:560px;margin:0 auto;padding:24px 18px 40px}
+
+  /* ── progress ───────────────────────────────────────────────────── */
+  .prog-rail{max-width:560px;margin:0 auto;padding:18px 18px 0}
+  .prog-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .prog-lbl{font-size:0.86rem;font-weight:700;color:var(--ink)}
+  .prog-pct{font-size:0.78rem;color:var(--cinza-muted);font-weight:600}
+  .prog-track{height:6px;background:var(--cinza-line);border-radius:999px;overflow:hidden}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--cyan-dark));border-radius:999px;transition:width .35s ease}
+
+  .steps-outer{max-width:560px;margin:0 auto;padding:20px 18px 0}
+  .step{display:none;animation:fadeIn .28s ease}
+  .step.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .step-head{margin-bottom:18px}
+  .step-eyebrow{font-size:0.74rem;font-weight:700;color:var(--cyan-dark);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .step-title{font-size:1.32rem;font-weight:800;line-height:1.3;color:var(--ink)}
+  .step-desc{font-size:0.88rem;color:var(--cinza-muted);margin-top:6px;line-height:1.5}
+
+  /* ── opções (botões de escolha) ────────────────────────────────── */
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{
+    position:relative;display:flex;align-items:center;gap:14px;width:100%;text-align:left;
+    background:var(--card);border:1.5px solid var(--cinza-line);border-radius:var(--radius-md);
+    padding:14px 16px;cursor:pointer;transition:transform .12s ease,border-color .15s ease,background .15s ease,box-shadow .15s ease;
+    box-shadow:var(--shadow-card);
+  }
+  .opt:active{transform:scale(0.98)}
+  .opt.sel{
+    border-color:var(--cyan);background:var(--cyan-bg);box-shadow:0 0 0 3px rgba(0,191,255,0.18);
+    transform:scale(1.01);
+  }
+  .opt-icon{font-size:1.5rem;line-height:1;flex-shrink:0}
+  .opt-text{flex:1;min-width:0}
+  .opt-name{font-weight:700;font-size:0.96rem;color:var(--ink)}
+  .opt-sub{font-size:0.8rem;color:var(--cinza-muted);margin-top:2px;line-height:1.4}
+  .revenue-chip{display:inline-block;margin-top:6px;font-size:0.72rem;font-weight:700;color:var(--cyan-dark);background:var(--cyan-bg);padding:3px 8px;border-radius:999px}
+  .opt-chk{
+    flex-shrink:0;width:22px;height:22px;border-radius:50%;border:2px solid var(--cinza-line);
+    display:flex;align-items:center;justify-content:center;transition:all .15s ease;
+  }
+  .opt-chk svg{width:12px;height:12px;stroke:#fff;stroke-width:2.4;fill:none;opacity:0;transition:opacity .12s ease}
+  .opt.sel .opt-chk{background:var(--cyan);border-color:var(--cyan)}
+  .opt.sel .opt-chk svg{opacity:1}
+  .opts.g2{display:grid;grid-template-columns:1fr;gap:10px}
+
+  .sect-divider{margin:26px 0 14px;padding-top:18px;border-top:1px dashed var(--cinza-line)}
+
+  /* ── campos ─────────────────────────────────────────────────────── */
+  .field{margin-bottom:16px}
+  .field-lbl{display:block;font-size:0.86rem;font-weight:700;color:var(--ink);margin-bottom:6px}
+  .field-lbl sup{color:var(--danger)}
+  .field-inp,.field-sel{
+    width:100%;padding:13px 14px;border:1.5px solid var(--cinza-line);border-radius:var(--radius-sm);
+    font-family:'Manrope',sans-serif;font-size:0.95rem;color:var(--ink);background:#fff;
+    transition:border-color .15s ease,box-shadow .15s ease;
+  }
+  .field-inp:focus,.field-sel:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,191,255,0.15)}
+  .field-inp.err{border-color:var(--danger)}
+  .field-hint{font-size:0.76rem;color:var(--cinza-muted);margin-top:5px}
+  .field-err{display:none;font-size:0.78rem;color:var(--danger);margin-top:5px;font-weight:600}
+  .field-err.show{display:block}
+
+  .ac-wrap{position:relative}
+  .ac-drop{
+    display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;
+    border:1px solid var(--cinza-line);border-radius:var(--radius-sm);box-shadow:0 8px 24px rgba(20,40,60,0.12);
+    max-height:220px;overflow-y:auto;z-index:10;
+  }
+  .ac-drop.open{display:block}
+  .ac-item{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;cursor:pointer;font-size:0.9rem;border-bottom:1px solid var(--cinza-line)}
+  .ac-item:last-child{border-bottom:none}
+  .ac-item:hover{background:var(--cyan-bg)}
+  .ac-badge{font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:999px}
+  .ac-badge.ok{background:var(--ok-bg);color:var(--ok)}
+  .ac-badge.nok{background:#FFF4E5;color:#B8720A}
+  .cov-warn{display:none;font-size:0.8rem;color:#B8720A;background:#FFF4E5;border-radius:var(--radius-sm);padding:10px 12px;margin-top:8px;line-height:1.4}
+  .cov-warn.show{display:block}
+
+  /* ── alerts ─────────────────────────────────────────────────────── */
+  .alert{display:none;border-radius:var(--radius-md);padding:14px 16px;margin-top:14px;line-height:1.5}
+  .alert.show{display:block;animation:fadeIn .2s ease}
+  .alert h3{margin:0 0 4px;font-size:0.92rem}
+  .alert p{margin:0;font-size:0.84rem}
+  .alert p a{color:inherit;font-weight:700}
+  .alert-danger{background:var(--danger-bg);color:var(--danger)}
+  .alert-warning{background:#FFF4E5;color:#8A5A0A}
+
+  .info-box{background:var(--cyan-bg);color:var(--cyan-dark);border-radius:var(--radius-sm);padding:12px 14px;font-size:0.8rem;line-height:1.5;margin-bottom:18px;font-weight:600}
+
+  /* ── resumo (etapa 5) ───────────────────────────────────────────── */
+  .summary{background:#fff;border:1.5px solid var(--cinza-line);border-radius:var(--radius-md);padding:16px;margin-bottom:20px;box-shadow:var(--shadow-card)}
+  .sum-title{font-size:0.82rem;font-weight:700;color:var(--cinza-muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px}
+  .sum-row{display:flex;justify-content:space-between;padding:6px 0;font-size:0.88rem;border-bottom:1px solid var(--cinza-line)}
+  .sum-row:last-child{border-bottom:none}
+  .sum-lbl{color:var(--cinza-muted)}
+  .sum-val{font-weight:700;color:var(--ink);text-align:right}
+
+  .trust-box{
+    display:flex;align-items:center;gap:10px;background:var(--ok-bg);color:var(--ok);
+    border-radius:var(--radius-sm);padding:12px 14px;margin:18px 0 14px;font-size:0.82rem;font-weight:600;line-height:1.4;
+  }
+  .trust-box svg{flex-shrink:0;width:20px;height:20px}
+
+  .check-row{display:flex;align-items:flex-start;gap:10px;margin:6px 0 22px}
+  .check-row input[type=checkbox]{width:22px;height:22px;flex-shrink:0;margin-top:1px;accent-color:var(--cyan)}
+  .check-row label{font-size:0.8rem;color:var(--cinza-muted);line-height:1.5}
+  .check-row label a{color:var(--cyan-dark);font-weight:700}
+
+  /* ── botões / navegação ─────────────────────────────────────────── */
+  .btm{margin-top:20px}
+  .btm.hidden{display:none}
+  .nav-row{display:flex;gap:10px;align-items:center;margin-top:24px}
+  .btn-back{
+    flex-shrink:0;background:none;border:none;color:var(--cinza-muted);font-weight:700;
+    font-size:0.88rem;cursor:pointer;padding:12px 8px;font-family:'Manrope',sans-serif;
+  }
+  .btn-full,.btn-next,.btn-submit{
+    flex:1;background:linear-gradient(180deg,var(--cyan),var(--cyan-dark));color:#fff;border:none;
+    border-radius:var(--radius-sm);padding:15px 20px;font-size:1rem;font-weight:800;cursor:pointer;
+    font-family:'Manrope',sans-serif;box-shadow:var(--shadow-cta);transition:transform .12s ease,opacity .15s ease;
+  }
+  .btn-full:active,.btn-next:active,.btn-submit:active{transform:scale(0.98)}
+  .btn-full:disabled,.btn-next:disabled,.btn-submit:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+
+  /* CTA sticky mobile — etapa 5 */
+  @media (max-width:640px){
+    .step#s5 .nav-row{
+      position:fixed;left:0;right:0;bottom:0;background:#fff;padding:12px 18px calc(12px + env(safe-area-inset-bottom));
+      box-shadow:0 -4px 20px rgba(20,40,60,0.10);margin-top:0;z-index:20;
+    }
+    .step#s5{padding-bottom:90px}
+  }
+
+  /* ── success ────────────────────────────────────────────────────── */
+  .success-wrap{text-align:center;padding:40px 10px}
+  .success-ring{
+    width:72px;height:72px;border-radius:50%;background:var(--ok-bg);color:var(--ok);
+    display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;margin:0 auto 20px;
+  }
+  .success-wrap h2{font-size:1.4rem;margin-bottom:10px}
+  .success-wrap p{color:var(--cinza-muted);font-size:0.92rem;line-height:1.6;max-width:380px;margin:0 auto}
+  .wa-btn{
+    display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;
+    font-weight:700;padding:14px 22px;border-radius:var(--radius-sm);margin-top:22px;font-size:0.94rem;
+  }
+
+  .dots{display:none}
+</style>
+</head>
+<body>
+
+<div class="preview-banner">
+  🔍 <b>Prévia de CRO — não envia lead real.</b> Formulário exclusivo para validação visual e de UX antes de subir ao site de produção.
+</div>
+
+<div class="prog-rail" id="prog-rail">
+  <div class="prog-meta">
+    <span class="prog-lbl" id="prog-lbl">Etapa 1 de 5</span>
+    <span class="prog-pct" id="prog-pct">20%</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+</div>
+
+<div class="steps-outer">
+
+  <!-- S1: Intenção -->
+  <div class="step active" id="s1">
+    <div class="step-head">
+      <div class="step-eyebrow">Etapa 1 de 5</div>
+      <div class="step-title">Por que você está aqui hoje?</div>
+      <div class="step-desc">Isso garante que vamos te direcionar corretamente.</div>
+    </div>
+    <div class="opts">
+      <button class="opt" data-val="busco" onclick="pick(this,'intent')">
+        <div class="opt-icon">👵</div>
+        <div class="opt-text">
+          <div class="opt-name">Preciso de um cuidador</div>
+          <div class="opt-sub">Para um familiar ou pessoa próxima que precisa de cuidados</div>
+        </div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="emprego" onclick="pick(this,'intent')">
+        <div class="opt-icon">💼</div>
+        <div class="opt-text">
+          <div class="opt-name">Quero trabalhar como cuidador</div>
+          <div class="opt-sub">Busco oportunidades de emprego na área</div>
+        </div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="duvida" onclick="pick(this,'intent')">
+        <div class="opt-icon">❓</div>
+        <div class="opt-text">
+          <div class="opt-name">Tenho dúvidas sobre o Nonno</div>
+          <div class="opt-sub">Quero entender como o serviço funciona antes de decidir</div>
+        </div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+    </div>
+    <div class="alert alert-danger" id="alert-emprego">
+      <h3>Você quer se cadastrar como cuidador?</h3>
+      <p>Esta página é destinada a quem <strong>contrata</strong> cuidadores. Para se cadastrar como profissional, <a href="https://nonnoapp.com/cadastro-cuidador/" target="_blank">acesse o cadastro de cuidadores →</a></p>
+    </div>
+    <div class="alert alert-warning" id="alert-duvida">
+      <h3>Pode continuar sem problema!</h3>
+      <p>Preencha o formulário mesmo com dúvidas — nossa equipe explica tudo pelo WhatsApp. Ou fale agora: <a href="https://wa.me/5548991361825" target="_blank">(48) 9913-61825</a></p>
+    </div>
+  </div>
+
+  <!-- S2: Localização -->
+  <div class="step" id="s2">
+    <div class="step-head">
+      <div class="step-eyebrow">Etapa 2 de 5</div>
+      <div class="step-title">Onde a pessoa que você ama precisa ser atendida?</div>
+      <div class="step-desc">Informe a cidade onde o cuidado será realizado.</div>
+    </div>
+    <div class="field">
+      <label class="field-lbl">Estado <sup>*</sup></label>
+      <select class="field-sel" id="state" onchange="onState()">
+        <option value="">Selecione o estado</option>
+        <option value="SC">Santa Catarina (SC)</option>
+        <option value="SP">São Paulo (SP)</option>
+        <option value="PR">Paraná (PR)</option>
+        <option value="RS">Rio Grande do Sul (RS)</option>
+        <option value="outro">Outro estado</option>
+      </select>
+    </div>
+    <div class="field" id="city-field" style="display:none">
+      <label class="field-lbl">Cidade <sup>*</sup></label>
+      <div class="ac-wrap">
+        <input class="field-inp" id="city-inp" type="text" placeholder="Digite o nome da cidade..." autocomplete="off" inputmode="text" oninput="onCity()" onblur="closeDrop()">
+        <div class="ac-drop" id="city-drop"></div>
+      </div>
+      <div class="cov-warn" id="cov-warn">⚠️ Esta cidade ainda não está em nossa área de atendimento. Você pode enviar assim mesmo — nossa equipe verificará disponibilidade e entrará em contato.</div>
+    </div>
+    <div class="alert alert-warning" id="alert-outro">
+      <h3>Ainda não atendemos em todos os estados</h3>
+      <p>O Nonno opera em SC, SP, PR e RS. Envie assim mesmo — entraremos em contato quando sua região for contemplada ou indicaremos alternativas.</p>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="go(1)">← Voltar</button>
+      <button class="btn-next" id="btn2" onclick="go(3)" disabled>Continuar →</button>
+    </div>
+  </div>
+
+  <!-- S3: Tipo de cuidado -->
+  <div class="step" id="s3">
+    <div class="step-head">
+      <div class="step-eyebrow">Etapa 3 de 5</div>
+      <div class="step-title">Qual tipo de cuidado você precisa?</div>
+      <div class="step-desc">Selecione o que melhor descreve a necessidade atual.</div>
+    </div>
+    <div class="opts">
+      <button class="opt" data-val="integral" onclick="pick(this,'care')">
+        <div class="opt-icon">🏠</div>
+        <div class="opt-text"><div class="opt-name">Cuidado diário / período integral</div><div class="opt-sub">Cuidador presente todos os dias, por longos períodos</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="plantao" onclick="pick(this,'care')">
+        <div class="opt-icon">🕐</div>
+        <div class="opt-text"><div class="opt-name">Por horas ou plantões</div><div class="opt-sub">Alguns períodos na semana, horários específicos</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="noturno" onclick="pick(this,'care')">
+        <div class="opt-icon">🌙</div>
+        <div class="opt-text"><div class="opt-name">Cuidado noturno</div><div class="opt-sub">Acompanhamento e segurança durante a noite</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="fds" onclick="pick(this,'care')">
+        <div class="opt-icon">📅</div>
+        <div class="opt-text"><div class="opt-name">Fins de semana / feriados</div><div class="opt-sub">Sábados, domingos ou datas específicas</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="hospitalar" onclick="pick(this,'care')">
+        <div class="opt-icon">🏥</div>
+        <div class="opt-text"><div class="opt-name">Acompanhamento hospitalar</div><div class="opt-sub">Internações, consultas ou pós-operatório</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="indefinido" onclick="pick(this,'care')">
+        <div class="opt-icon">💬</div>
+        <div class="opt-text"><div class="opt-name">Ainda não sei</div><div class="opt-sub">Preciso de orientação para escolher</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="go(2)">← Voltar</button>
+    </div>
+  </div>
+
+  <!-- S4: Frequência + Urgência -->
+  <div class="step" id="s4">
+    <div class="step-head">
+      <div class="step-eyebrow">Etapa 4 de 5</div>
+      <div class="step-title">Com que frequência você precisará do cuidador?</div>
+      <div class="step-desc">Isso define a proposta mais adequada — quanto mais regular, maior nossa prioridade de atendimento.</div>
+    </div>
+    <div class="opts">
+      <button class="opt" data-val="recorrente" onclick="pick(this,'freq')">
+        <div class="opt-icon">🔁</div>
+        <div class="opt-text">
+          <div class="opt-name">Atendimento fixo (recorrente)</div>
+          <div class="opt-sub">Mesmos dias e horários toda semana — ex: 2x por semana, toda semana no mesmo turno ou todo final de semana</div>
+          <div class="revenue-chip">⭐ Alta prioridade de atendimento</div>
+        </div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="pontual" onclick="pick(this,'freq')">
+        <div class="opt-icon">📌</div>
+        <div class="opt-text">
+          <div class="opt-name">Atendimento pontual</div>
+          <div class="opt-sub">Precisamos de um cuidador em uma data ou período específico<br>Ex: viagem, internação, pós-cirúrgico</div>
+        </div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="indefinido" onclick="pick(this,'freq')">
+        <div class="opt-icon">💬</div>
+        <div class="opt-text">
+          <div class="opt-name">Ainda não sei / quero entender as opções</div>
+          <div class="opt-sub">Estou avaliando a necessidade ou quero orientação antes de decidir</div>
+        </div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+    </div>
+
+    <div class="sect-divider" id="urg-divider">
+      <div class="step-title">Para quando você precisa?</div>
+      <div class="step-desc" style="margin-top:4px">Isso define a prioridade do seu atendimento.</div>
+    </div>
+
+    <div class="opts g2" id="urg-group">
+      <button class="opt" data-val="urgente" onclick="pick(this,'urg')">
+        <div class="opt-icon">🚨</div>
+        <div class="opt-text"><div class="opt-name">Urgente</div><div class="opt-sub">Hoje ou amanhã</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="semana" onclick="pick(this,'urg')">
+        <div class="opt-icon">📆</div>
+        <div class="opt-text"><div class="opt-name">Esta semana</div><div class="opt-sub">Nos próximos dias</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="mes" onclick="pick(this,'urg')">
+        <div class="opt-icon">🗓️</div>
+        <div class="opt-text"><div class="opt-name">Este mês</div><div class="opt-sub">Próximas semanas</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+      <button class="opt" data-val="planejando" onclick="pick(this,'urg')">
+        <div class="opt-icon">🔭</div>
+        <div class="opt-text"><div class="opt-name">Planejando</div><div class="opt-sub">Sem data definida</div></div>
+        <div class="opt-chk"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+      </button>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="go(3)">← Voltar</button>
+    </div>
+  </div>
+
+  <!-- S5: Contato -->
+  <div class="step" id="s5">
+    <div class="step-head">
+      <div class="step-eyebrow">Etapa 5 de 5</div>
+      <div class="step-title">Quase lá — seus dados de contato</div>
+      <div class="step-desc">Para enviarmos sua proposta personalizada pelo WhatsApp.</div>
+    </div>
+    <div class="summary">
+      <div class="sum-title">Resumo da sua solicitação</div>
+      <div class="sum-row"><span class="sum-lbl">Cidade</span><span class="sum-val" id="s-city">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">Tipo de cuidado</span><span class="sum-val" id="s-care">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">Frequência</span><span class="sum-val" id="s-freq">—</span></div>
+      <div class="sum-row"><span class="sum-lbl">Urgência</span><span class="sum-val" id="s-urg">—</span></div>
+    </div>
+    <div class="field">
+      <label class="field-lbl" for="f-nome">Nome completo <sup>*</sup></label>
+      <input class="field-inp" id="f-nome" type="text" placeholder="Ex: Maria da Silva" oninput="val5()">
+      <div class="field-err" id="e-nome">Informe nome e sobrenome.</div>
+    </div>
+    <div class="field">
+      <label class="field-lbl" for="f-tel">WhatsApp <sup>*</sup></label>
+      <input class="field-inp" id="f-tel" type="tel" placeholder="(00) 00000-0000" inputmode="tel" oninput="fmtPhone(this);val5()" maxlength="15">
+      <div class="field-hint">Enviaremos sua proposta por aqui</div>
+      <div class="field-err" id="e-tel">Informe um número válido com DDD.</div>
+    </div>
+    <div class="field">
+      <label class="field-lbl" for="f-email">E-mail <sup>*</sup></label>
+      <input class="field-inp" id="f-email" type="email" placeholder="seu@email.com" inputmode="email" oninput="val5()">
+      <div class="field-err" id="e-email">Informe um e-mail válido.</div>
+    </div>
+    <div class="field">
+      <label class="field-lbl" for="f-paciente">Nome de quem precisa de cuidados <sup>*</sup></label>
+      <input class="field-inp" id="f-paciente" type="text" placeholder="Ex: João da Silva">
+    </div>
+    <div class="field">
+      <label class="field-lbl" for="f-canal">Como nos encontrou?</label>
+      <select class="field-sel" id="f-canal">
+        <option value="">Selecione</option>
+        <option value="google">Pesquisa no Google / Bing</option>
+        <option value="indicacao">Indicação (família ou amigos)</option>
+        <option value="social">Redes sociais (Instagram, Facebook)</option>
+        <option value="midia">Propaganda (rádio, TV, panfleto)</option>
+        <option value="parceiros">Parceiros Nonno</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="field-lbl" for="f-obs">Informações adicionais <span style="color:var(--cinza-muted);font-weight:500">(opcional)</span></label>
+      <textarea class="field-inp" id="f-obs" rows="3" placeholder="Ex: A paciente tem Alzheimer e precisa de cuidados especiais..."></textarea>
+    </div>
+
+    <div class="trust-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Respondemos pelo WhatsApp em até 1 dia útil — sem compromisso.
+    </div>
+
+    <div class="check-row">
+      <input type="checkbox" id="lgpd" onchange="val5()">
+      <label for="lgpd">Li e aceito os <a href="https://nonnoapp.com/termos-de-uso-e-politica-de-privacidade-nonno/" target="_blank">Termos de Uso e Política de Privacidade</a> do Nonno e concordo com o uso dos meus dados para o envio do orçamento.</label>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="go(4)">← Voltar</button>
+      <button class="btn-submit" id="btn5" onclick="submitForm()" disabled>Quero encontrar um cuidador →</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="step" id="s-ok">
+    <div class="success-wrap">
+      <div class="success-ring">✓</div>
+      <h2>Solicitação recebida!</h2>
+      <p>Nossa equipe já está com suas informações e entrará em contato pelo WhatsApp com uma proposta personalizada.</p>
+      <a href="#" onclick="return false" class="wa-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        Falar com a equipe agora (desativado na prévia)
+      </a>
+      <p style="font-size:0.78rem;margin-top:14px">Você também receberia uma confirmação por e-mail.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const CITIES={SC:['Florianópolis','Itapema','Blumenau','Itajaí','Campo Alegre','Palhoça','Balneário Camboriú','São José','Biguaçu','Jaraguá do Sul','Garopaba','Chapecó','Criciúma','Brusque','São Bento do Sul','Joinville','Laguna','Tubarão','Santo Amaro da Imperatriz','Gaspar','Imbituba','Bombinhas','Penha','Navegantes','Governador Celso Ramos','Balneário','Barra Velha','Camboriú','Indaial','Porto Belo','Tijucas'],SP:['São Paulo','Santo André','São Bernardo do Campo','São Caetano','Guarulhos','Santos','Campinas','Barueri','Taboão da Serra','Osasco','São Caetano do Sul','Jundiaí','Sumaré'],PR:['Curitiba','Campina Grande do Sul','São José dos Pinhais','Guarapuava','Colombo','Pinhais','Quatro Barras','Londrina'],RS:['Porto Alegre','Canoas','Arroio do Sul','Eldorado do Sul','Novo Hamburgo','Viamão','São Leopoldo','Sapucaia do Sul','Esteio','Cruzeiro do Sul','Estrela','Lajeado']};
+  const fd={intent:null,state:null,city:null,covered:false,care:null,freq:null,urg:null};
+  let cur=1;
+  const AUTO_ADVANCE_DELAY=320; // ms — feedback visual antes de trocar de etapa (benchmark CRO)
+
+  function pick(el,f){
+    el.closest('.opts').querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+    el.classList.add('sel');fd[f]=el.dataset.val;
+
+    if(f==='intent'){
+      document.getElementById('alert-emprego').classList.remove('show');
+      document.getElementById('alert-duvida').classList.remove('show');
+      if(fd.intent==='emprego'){
+        document.getElementById('alert-emprego').classList.add('show');
+        return; // não avança — bloqueado
+      }
+      if(fd.intent==='duvida')document.getElementById('alert-duvida').classList.add('show');
+      // auto-advance: escolha única e óbvia
+      setTimeout(()=>go(2),AUTO_ADVANCE_DELAY);
+    }
+
+    if(f==='care'){
+      setTimeout(()=>go(4),AUTO_ADVANCE_DELAY);
+    }
+
+    if(f==='freq'||f==='urg'){
+      // etapa 4 tem DOIS grupos — só avança quando ambos estiverem preenchidos
+      if(f==='freq'){
+        // guia o olhar para o segundo grupo com scroll suave
+        document.getElementById('urg-divider').scrollIntoView({behavior:'smooth',block:'start'});
+      }
+      if(fd.freq&&fd.urg){
+        setTimeout(()=>go(5),AUTO_ADVANCE_DELAY);
+      }
+    }
+  }
+
+  function onState(){
+    const v=document.getElementById('state').value;fd.state=v;fd.city=null;fd.covered=false;
+    document.getElementById('city-inp').value='';
+    document.getElementById('cov-warn').classList.remove('show');
+    document.getElementById('btn2').disabled=true;
+    const cf=document.getElementById('city-field'),ao=document.getElementById('alert-outro');
+    if(v==='outro'){cf.style.display='none';ao.classList.add('show');document.getElementById('btn2').disabled=false;}
+    else if(v){cf.style.display='block';ao.classList.remove('show');}
+    else{cf.style.display='none';ao.classList.remove('show');}
+  }
+
+  function norm(s){
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+  }
+
+  // Apelidos populares \u2192 nome oficial (evita falso "fora de cobertura" em cidades atendidas)
+  const CITY_ALIASES={floripa:'Florian\u00f3polis',bc:'Balne\u00e1rio Cambori\u00fa',balneario:'Balne\u00e1rio Cambori\u00fa',sanjo:'S\u00e3o Jos\u00e9',joinvile:'Joinville'};
+
+  function onCity(){
+    const raw=document.getElementById('city-inp').value;
+    const q=norm(raw);
+    const alias=CITY_ALIASES[q];
+    const drop=document.getElementById('city-drop');
+    if(!fd.state||fd.state==='outro'||q.length<2){drop.classList.remove('open');return;}
+    const list=CITIES[fd.state]||[];
+    let matches=list.filter(c=>norm(c).includes(q));
+    if(alias&&list.includes(alias)&&!matches.includes(alias))matches=[alias,...matches];
+    let html='';
+    matches.slice(0,8).forEach(c=>{html+=`<div class="ac-item" onmousedown="setCity('${c.replace(/'/g,"\\'")}',true)"><span>${c}</span><span class="ac-badge ok">Atendemos ✓</span></div>`;});
+    const typed=cap(raw.trim());
+    const exactMatch=matches.some(c=>norm(c)===q);
+    if(!exactMatch&&q.length>=3){html+=`<div class="ac-item" onmousedown="setCity('${typed.replace(/'/g,"\\'")}',false)"><span>${typed}</span><span class="ac-badge nok">Verificar cobertura</span></div>`;}
+    drop.innerHTML=html||'<div class="ac-item" style="color:var(--cinza-muted);cursor:default">Nenhuma cidade encontrada</div>';
+    drop.classList.add('open');
+  }
+
+  function setCity(city,ok){
+    document.getElementById('city-inp').value=city;
+    document.getElementById('city-drop').classList.remove('open');
+    fd.city=city;fd.covered=ok;
+    document.getElementById('cov-warn').classList.toggle('show',!ok);
+    document.getElementById('btn2').disabled=false;
+  }
+
+  function closeDrop(){setTimeout(()=>document.getElementById('city-drop').classList.remove('open'),200);}
+  function cap(s){return s.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1).toLowerCase()).join(' ');}
+
+  function go(n){
+    document.getElementById('s'+cur).classList.remove('active');
+    if(n==='ok'){
+      document.getElementById('s-ok').classList.add('active');
+      document.getElementById('prog-rail').style.display='none';
+      return;
+    }
+    cur=n;
+    document.getElementById('s'+cur).classList.add('active');
+    const pct=Math.round((cur/5)*100);
+    document.getElementById('prog-fill').style.width=pct+'%';
+    document.getElementById('prog-lbl').textContent=`Etapa ${cur} de 5`;
+    document.getElementById('prog-pct').textContent=pct+'%';
+    if(cur===5)fillSum();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function val5(){
+    const nome=document.getElementById('f-nome').value.trim();
+    const tel=document.getElementById('f-tel').value.replace(/\D/g,'');
+    const email=document.getElementById('f-email').value.trim();
+    const lgpd=document.getElementById('lgpd').checked;
+    document.getElementById('btn5').disabled=!(nome.split(' ').length>=2&&tel.length>=10&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)&&lgpd);
+  }
+
+  function fmtPhone(inp){
+    let v=inp.value.replace(/\D/g,'').slice(0,11);
+    if(v.length<=10)v=v.replace(/(\d{2})(\d{4})(\d{0,4})/,'($1) $2-$3');
+    else v=v.replace(/(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3');
+    inp.value=v;
+  }
+
+  function fillSum(){
+    const cm={integral:'Diário / integral',plantao:'Por horas/plantões',noturno:'Noturno',fds:'Fins de semana',hospitalar:'Hospitalar',indefinido:'A definir'};
+    const fm={recorrente:'Fixo / recorrente',pontual:'Pontual',indefinido:'A definir'};
+    const um={urgente:'Urgente (hoje/amanhã)',semana:'Esta semana',mes:'Este mês',planejando:'Planejando'};
+    document.getElementById('s-city').textContent=fd.city?`${fd.city} / ${fd.state}`:(fd.state==='outro'?'Outro estado':'—');
+    document.getElementById('s-care').textContent=cm[fd.care]||'—';
+    document.getElementById('s-freq').textContent=fm[fd.freq]||'—';
+    document.getElementById('s-urg').textContent=um[fd.urg]||'—';
+  }
+
+  /* ── PRÉVIA: submit NÃO envia nada de verdade — apenas simula ────── */
+  function submitForm(){
+    const nome=document.getElementById('f-nome').value.trim();
+    const tel=document.getElementById('f-tel').value.replace(/\D/g,'');
+    const email=document.getElementById('f-email').value.trim();
+    let ok=true;
+    const se=(id,eid,cond)=>{document.getElementById(id).classList.toggle('err',cond);document.getElementById(eid).classList.toggle('show',cond);if(cond)ok=false;};
+    se('f-nome','e-nome',nome.split(' ').length<2);
+    se('f-tel','e-tel',tel.length<10);
+    se('f-email','e-email',!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+    if(!ok)return;
+
+    const btn=document.getElementById('btn5');
+    btn.disabled=true;
+    btn.textContent='Enviando...';
+    console.log('[PRÉVIA] Nenhum dado foi enviado. Payload simulado:',{
+      intencao:fd.intent,estado:fd.state,cidade:fd.city,cidade_na_cobertura:fd.covered,
+      tipo_cuidado:fd.care,frequencia:fd.freq,urgencia:fd.urg
+    });
+    setTimeout(()=>go('ok'),600); // simula latência de rede sem chamar webhook real
+  }
+</script>
+</body>
+</html>
